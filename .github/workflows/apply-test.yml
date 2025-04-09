@@ -1,0 +1,19 @@
+name: Apply Test Snowflake
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "ci-cd-schemachange/scripts/**.sql"
+  workflow_dispatch:
+jobs:
+  deploy-schemachange-changes-job:
+    uses: ./.github/workflows/reusable-schemachange-job.yml
+    with:
+      target_env: Test
+      env_prefix: TEST
+      warehouse: TEST_SCHEMACHANGE_WH
+      database: TEST_METADATA
+      role: TEST_SCHEMACHANGE_SERVICE_ROLE
+      schema_change_flags: "-v"
+    secrets: inherit
