@@ -10,8 +10,8 @@ on:
         required: true
         type: string
       warehouse:
-          required: true
-          type: string
+        required: true
+        type: string
       database:
         required: true
         type: string
@@ -35,15 +35,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Use Python 3.8.x
         uses: actions/setup-python@v2.3.4
         with:
           python-version: 3.8.x
-      
+
       - name: Run schemachange
         env:
-          SF_ACCOUNT: qvb95105.us-east-1
+          SF_ACCOUNT: rwb73287.us-east-1
           SF_USERNAME: SVC_SCHEMACHANGE
           SF_ROLE: ${{ inputs.role }}
           SF_WAREHOUSE: ${{ inputs.warehouse }}
@@ -54,15 +54,8 @@ jobs:
           SNOWFLAKE_PRIVATE_KEY_PATH: ${{ github.workspace }}/sf_schemachange_private_key.p8
           SNOWFLAKE_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SF_KEY_PASSPHRASE }}
         run: |
-          # Write private key to file
           echo "${{ secrets.SF_PRIVATE_KEY }}" > sf_schemachange_private_key.p8
-          
-          # Install schemachange
           pip install schemachange==3.7.0
-          
-          # Run schemachange
-          cd $GITHUB_WORKSPACE/ci-cd-schemachange/scripts
+          cd $GITHUB_WORKSPACE/ci-cd-schemachange
           schemachange ${{ inputs.schema_change_flags }}
-          
-          # Clean up key file (security best practice)
           rm sf_schemachange_private_key.p8
