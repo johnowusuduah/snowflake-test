@@ -58,4 +58,3 @@ jobs:
           pip install schemachange==3.7.0
           cd $GITHUB_WORKSPACE/ci-cd-schemachange
           schemachange ${{ inputs.schema_change_flags }}
-          rm sf_schemachange_private_key.p8
